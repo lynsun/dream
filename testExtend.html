@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>moviecliptest</title>
+<script type="text/javascript" src="js/core/Dream.js"></script>
+<script type="text/javascript">
+function extend1(subClass,superClass){
+	var F=function(){};
+	F.prototype=superClass.prototype;
+	subClass.prototype=new F();
+	subClass.prototype.constructor=subClass;
+	subClass.superclass=superClass.prototype;
+	if(superClass.prototype.constructor==Object.prototype.constructor){
+		superClass.prototype.constructor=superClass;
+	}
+}
+
+
+var Animal=function(config){
+	this.name=config.name;
+}
+
+
+var Dog=function(config){
+	this.type=config.type;
+	Dog.superclass.constructor.call(this,config);
+}
+//extend(Dog,Animal);
+
+Dream.extend(Dog,Animal);
+var dog=new Dog({
+	name:'mydog',
+	type:'jingba'
+});
+console.log(dog);
+
+</script>
+</head>
+<body>
+<div id="ctn" style="text-align:center;">
+<canvas width="400" height="400" id="can" style="border:1px solid red;"></canvas>
+</div>
+</body>
+</html>
+

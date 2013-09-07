@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>moviecliptest</title>
+<script type="text/javascript" src="js/seajs/sea.js"></script>
+<script type="text/javascript">
+    seajs.config({
+        base:'file:///E:/github/Dream/dream/',
+        alias:{
+        },
+        charset:'utf-8',
+        timeout:20000,
+        debug:1
+    });
+	
+    seajs.use('core/Dream',function(Dream){
+        var game=window.game={};
+		var display=Dream.display;
+		var utils=Dream.utils;
+		var events=Dream.events;
+        var DisplayObject=display.DisplayObject;
+        var MovieClip=display.MovieClip;
+		var EventDispatcher=events.EventDispatcher;
+        var Timer=utils.Timer;
+		var DisplayObjectContainer=display.DisplayObjectContainer;
+    });
+</script>
+</head>
+<body>
+<div id="ctn" style="text-align:left;">
+<canvas width="1000" height="600" id="can" style="border:none;"></canvas>
+</div>
+
+</body>
+</html>
+

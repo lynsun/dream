@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>moviecliptest</title>
+<script type="text/javascript" src="lib/seajs/sea.js"></script>
+<script type="text/javascript">
+    seajs.config({
+        base:'file:///E:/github/Dream/dream/',
+        alias:{
+        },
+        charset:'utf-8',
+        timeout:20000,
+        debug:1
+    });
+    
+    seajs.use('core/Dream',function(Dream){
+        var game=window.game={};
+		
+		var display=Dream.display;
+		var events=Dream.events;
+        var DisplayObject=display.DisplayObject;
+        var MovieClip=display.MovieClip;
+		var EventDispatcher=events.EventDispatcher;
+        var box=new MovieClip();
+        box.x=100;
+        box.y=100;
+        box.width=100;
+        box.height=100;
+        box.render=function(ctx){
+            ctx.save();
+            ctx.transform(2,0,0,2,100,100);
+            ctx.fillStyle="rgba(255,0,0,128)";
+            ctx.fillRect(this.x,this.y,this.width,this.height);
+            ctx.restore();
+        };
+        box.update=function(){
+            this.x+=1;
+            this.y+=1;
+        };   
+        
+        
+        var can=document.getElementById('can');
+        var ctx=can.getContext('2d');
+        function onEnterFrame(){
+			try{
+				 ctx.clearRect(0,0,1000,600);
+				 ctx.drawImage(game.asset.bg,0,0);
+				 ctx.drawImage(game.asset.topbar,100,0);
+				 ctx.drawImage(game.asset.zom,600,400);
+				 clearInterval(game.timer);
+			}catch(e){
+				 clearInterval(game.timer);
+				 console.log(e);
+			}
+           
+        }
+		
+		//全局事件监听器
+		var stageEvent=game.stageEvent=new EventDispatcher();
+		stageEvent.addEventListener('loadComplete',onLoadComplete);
+		function onLoadComplete(){
+			game.timer=window.setInterval(onEnterFrame,25);
+		}
+
+		game.asset={};
+		var loadComplete=false;
+        var images=window.images=[{name:'bg',src:'images/zom/bg/background.jpg'},
+						  {name:'topbar',src:'images/zom/bg/top.gif'},
+						  {name:'zom',src:'images/zom/Zombie/Zombie2.gif'}];
+        var totalCount=images.length;
+        var countLoaded=0;
+        for(var i=0,len=totalCount;i<len;i++){
+            var imgInfo=images[i],
+                 img=new Image();
+            img.onload=function(){
+                 countLoaded++;
+				 if(countLoaded==totalCount){
+					loadComplete=true;
+					game.stageEvent.dispatchEvent({type:'loadComplete',target:this});
+				 }
+            }
+			game.asset[imgInfo.name]=img;
+			img.src=imgInfo.src;
+        }
+    });
+</script>
+</head>
+<body>
+<div id="ctn" style="text-align:left;">
+<canvas width="1000" height="600" id="can" style="border:none;"></canvas>
+</div>
+</body>
+</html>
+

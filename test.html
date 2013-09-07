@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>moviecliptest</title>
+<script type="text/javascript" src="js/core/Dream.js"></script>
+<script type="text/javascript" src="js/utils/utils.js"></script>
+<script type="text/javascript" src="js/events/EventDispatcher.js"></script>
+<script type="text/javascript" src="js/display/DisplayObject.js"></script>
+<script type="text/javascript" src="js/display/Bitmap.js"></script>
+<script type="text/javascript" src="js/display/Scene.js"></script>
+<script type="text/javascript" src="js/display/Frame.js"></script>
+<script type="text/javascript" src="js/display/MovieClip.js"></script>
+<script type="text/javascript">
+var EnemyTank=funciton(config){
+	this.name=config.name||"MT";
+	this.vx=config.vx||0;
+	this.vy=config.vy||0;
+}
+EnemyTank.prototype.update=function(){
+	this.x+=vx;
+	this.y+=vy;
+}
+EnemyTank.prototype.move=function(){
+	
+}
+Dream.extend(Tank,Dream.MovieClip);
+</script>
+<script type="text/javascript">
+
+window.onload=function(){
+	var canvas=document.getElementById("can");
+	var ctx=canvas.getContext("2d");
+	var w=canvas.width;
+	var h=canvas.height;
+
+	var D=Dream;
+	var Frame=D.Frame;
+	var Bitmap=D.Bitmap;
+	var MovieClip=D.MovieClip;
+	var Scene=D.Scene;
+	
+	
+	var img=new Image();
+	img.src="images/char1.png";
+	img.onload=function(){
+		init();
+	}
+
+	document.addEventListener("keydown",keydownListener,false);
+	document.addEventListener("keyup",keyupListener,false);
+	function keydownListener(e){
+		switch(e.keyCode){
+			case 39:
+				person.stop=false;
+				person.setMove("goRight");
+				break;
+			default:
+				person.moveable=false;
+				person.gotoAndStop(0,"goRight");
+				break;
+		}
+	}
+
+	function keyupListener(e){
+		switch(e.keyCode){
+			case 39:
+				person.stop=true;
+				person.setStand("goRight");
+				break;
+		}
+	}
+	
+	//enterframe
+	function onEnterFrame(){
+		ctx.clearRect(0,0,w,h);
+		for(var i=0,len=stage.list.length;i<len;i++){
+			var child=stage.list[i];
+			child.update();
+			child.render(ctx);
+		}
+	}
+
+	
+	function init(){
+		var enemy=new EnemyTank({
+			name:'enemy1',
+			frameRate:5
+		});
+		var sceneName=["down","left","right","top"];
+		for(var i=0;i<4;i++){
+			var scene=new Scene(sceneName[i]);
+			for(var j=0;j<4;j++){
+				var bitmap=new Bitmap({
+					image:img,
+					sourceX:3+j*40,
+					sourceY:2+i*54,
+					width:32,
+					height:50
+				})
+				var frame=new Frame(
+					bitmap:bitmap
+				)
+				scene.add(frame);
+			}
+			enemy.addScene(scene);
+		}
+		
+
+		person.update=function(){
+			if(this.moveable){
+				this.move();
+			}
+		}
+		person.gotoAndStop(0,"goRight");
+		person.move=function(){
+				person.x+=1;
+		}
+		person.setMove=function(){
+			if(!person.moveable){
+				this.gotoAndPlay(1,"goRight");
+			}
+			person.moveable=true;
+		}
+		person.setStand=function(sceneName){
+			if(this.moveable){
+				this.gotoAndStop(0,sceneName);
+			}
+			this.moveable=false;
+		}
+	
+		stage.addChild(person);
+		var timer=window.setInterval(onEnterFrame,25);//40fps
+
+	}
+
+	var stage={
+		list:[],
+		addChild:function(disObj){
+			this.list.push(disObj);
+		}
+	}
+	
+}
+
+</script>
+</head>
+<body>
+<div id="ctn" style="text-align:center;">
+<canvas width="800" height="800" id="can" style="border:1px solid red;"></canvas>
+</div>
+</body>
+</html>
+
