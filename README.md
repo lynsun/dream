@@ -1,4 +1,4 @@
-dream
+dream.js
 =====
 
 一个as3风格的html5 canvas游戏引擎
