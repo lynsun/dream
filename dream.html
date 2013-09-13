@@ -16,11 +16,11 @@
     seajs.use('core/Dream',function(Dream){
         var game=window.game={};
 		
-		var display=Dream.display;
-		var events=Dream.events;
+	var display=Dream.display;
+	var events=Dream.events;
         var DisplayObject=display.DisplayObject;
         var MovieClip=display.MovieClip;
-		var EventDispatcher=events.EventDispatcher;
+	var EventDispatcher=events.EventDispatcher;
         var box=new MovieClip();
         box.x=100;
         box.y=100;
@@ -42,31 +42,31 @@
         var can=document.getElementById('can');
         var ctx=can.getContext('2d');
         function onEnterFrame(){
-			try{
-				 ctx.clearRect(0,0,1000,600);
-				 ctx.drawImage(game.asset.bg,0,0);
-				 ctx.drawImage(game.asset.topbar,100,0);
-				 ctx.drawImage(game.asset.zom,600,400);
-				 clearInterval(game.timer);
-			}catch(e){
-				 clearInterval(game.timer);
-				 console.log(e);
-			}
+		try{
+			 ctx.clearRect(0,0,1000,600);
+			 ctx.drawImage(game.asset.bg,0,0);
+			 ctx.drawImage(game.asset.topbar,100,0);
+			 ctx.drawImage(game.asset.zom,600,400);
+			 clearInterval(game.timer);
+		}catch(e){
+			 clearInterval(game.timer);
+			 console.log(e);
+		}
            
         }
 		
-		//È«¾ÖÊÂ¼þ¼àÌýÆ÷
-		var stageEvent=game.stageEvent=new EventDispatcher();
-		stageEvent.addEventListener('loadComplete',onLoadComplete);
-		function onLoadComplete(){
-			game.timer=window.setInterval(onEnterFrame,25);
-		}
+	//È«ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	var stageEvent=game.stageEvent=new EventDispatcher();
+	stageEvent.addEventListener('loadComplete',onLoadComplete);
+	function onLoadComplete(){
+		game.timer=window.setInterval(onEnterFrame,25);
+	}
 
-		game.asset={};
-		var loadComplete=false;
+	game.asset={};
+	var loadComplete=false;
         var images=window.images=[{name:'bg',src:'images/zom/bg/background.jpg'},
-						  {name:'topbar',src:'images/zom/bg/top.gif'},
-						  {name:'zom',src:'images/zom/Zombie/Zombie2.gif'}];
+				  {name:'topbar',src:'images/zom/bg/top.gif'},
+				  {name:'zom',src:'images/zom/Zombie/Zombie2.gif'}];
         var totalCount=images.length;
         var countLoaded=0;
         for(var i=0,len=totalCount;i<len;i++){
@@ -74,13 +74,13 @@
                  img=new Image();
             img.onload=function(){
                  countLoaded++;
-				 if(countLoaded==totalCount){
-					loadComplete=true;
-					game.stageEvent.dispatchEvent({type:'loadComplete',target:this});
-				 }
+		 if(countLoaded==totalCount){
+			loadComplete=true;
+			game.stageEvent.dispatchEvent({type:'loadComplete',target:this});
+		 }
             }
-			game.asset[imgInfo.name]=img;
-			img.src=imgInfo.src;
+	    game.asset[imgInfo.name]=img;
+	    img.src=imgInfo.src;
         }
     });
 </script>
